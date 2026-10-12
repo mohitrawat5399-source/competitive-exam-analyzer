@@ -1,0 +1,70 @@
+# Prepmaster theme — a calm "study notebook" look:
+# warm paper background, ink-coloured text, one deep green accent,
+# serif headings (Fraunces) over a clean sans body (IBM Plex Sans).
+# Both light and dark variants are defined so users can switch in the app menu.
+
+[theme]
+font = "'IBM Plex Sans':https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
+headingFont = "Fraunces:https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap"
+codeFont = "'IBM Plex Mono':https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap"
+baseFontSize = 15
+baseFontWeight = 400
+codeFontSize = "0.85rem"
+headingFontSizes = ["38px", "26px", "21px", "17px", "15px", "13px"]
+headingFontWeights = [600, 600, 600, 600, 500, 500]
+baseRadius = "10px"
+buttonRadius = "8px"
+showWidgetBorder = true
+showSidebarBorder = true
+linkUnderline = false
+
+[theme.light]
+primaryColor = "#1F5F4A"
+backgroundColor = "#FAF8F3"
+secondaryBackgroundColor = "#F1EEE6"
+codeBackgroundColor = "#F1EEE6"
+textColor = "#1B1A17"
+linkColor = "#1F5F4A"
+borderColor = "#E3DED3"
+dataframeBorderColor = "#E3DED3"
+dataframeHeaderBackgroundColor = "#F1EEE6"
+greenColor = "#2F7D5B"
+redColor = "#B5452F"
+orangeColor = "#C2741A"
+yellowColor = "#B8901C"
+blueColor = "#3A6EA5"
+violetColor = "#6B5CA5"
+grayColor = "#7A756B"
+chartCategoricalColors = ["#1F5F4A", "#C2741A", "#3A6EA5", "#B5452F", "#6B5CA5", "#7A756B", "#8FA89A"]
+
+[theme.light.sidebar]
+backgroundColor = "#F3F0E8"
+secondaryBackgroundColor = "#EAE6DC"
+borderColor = "#E3DED3"
+
+[theme.dark]
+primaryColor = "#2E7D62"
+backgroundColor = "#151513"
+secondaryBackgroundColor = "#1F1E1B"
+codeBackgroundColor = "#1F1E1B"
+textColor = "#ECE9E1"
+linkColor = "#6CC3A0"
+borderColor = "#2F2D29"
+dataframeBorderColor = "#2F2D29"
+dataframeHeaderBackgroundColor = "#1F1E1B"
+greenColor = "#5BB98C"
+redColor = "#E07A5F"
+orangeColor = "#E0A04A"
+yellowColor = "#E3C567"
+blueColor = "#7AA7D9"
+violetColor = "#A99BDB"
+grayColor = "#9A958B"
+chartCategoricalColors = ["#6CC3A0", "#E0A04A", "#7AA7D9", "#E07A5F", "#A99BDB", "#9A958B", "#3E9A78"]
+
+[theme.dark.sidebar]
+backgroundColor = "#11110F"
+secondaryBackgroundColor = "#1A1917"
+borderColor = "#2A2925"
+
+[client]
+toolbarMode = "minimal"

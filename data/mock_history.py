@@ -5,14 +5,16 @@ Provides realistic metrics, test progression history, topic mastery levels, and 
 
 DASHBOARD_SUMMARY = {
     "avg_score": 68.5,
-    "score_delta": "+5.2 pts vs last month",
+    "score_delta": "+5.2 pts",
+    "score_delta_note": "vs last month",
     "avg_accuracy": 77.8,
-    "accuracy_delta": "+3.4% this week",
+    "accuracy_delta": "+3.4%",
+    "accuracy_delta_note": "this week",
     "tests_completed": 14,
     "total_questions_solved": 860,
     "current_streak_days": 12,
     "predicted_gate_score": 745,
-    "predicted_rank": "AIR 240 - 320",
+    "predicted_rank": "AIR 240–320",
     "estimated_percentile": 98.4
 }
 
@@ -171,21 +173,21 @@ STRONGEST_TOPICS = [
         "topic": "Algorithms",
         "accuracy": 89.5,
         "mastery": "Expert (88/100)",
-        "badge": "🥇 Best Performing",
+        "badge": "Best performing",
         "highlight": "High speed on Dynamic Programming & Divide-and-Conquer"
     },
     {
         "topic": "Data Structures",
         "accuracy": 86.0,
         "mastery": "Proficient (85/100)",
-        "badge": "🥈 Consistent",
+        "badge": "Consistent",
         "highlight": "Flawless on Trees, Heaps, and Hashing"
     },
     {
         "topic": "Operating Systems",
         "accuracy": 82.5,
         "mastery": "Proficient (81/100)",
-        "badge": "🥉 Reliable",
+        "badge": "Reliable",
         "highlight": "Strong on Process Synchronization & Scheduling"
     }
 ]
@@ -195,7 +197,7 @@ WEAKEST_TOPICS = [
         "topic": "Compiler Design",
         "accuracy": 51.0,
         "mastery": "Critical (49/100)",
-        "badge": "⚠️ High Negative Marking",
+        "badge": "High negative marking",
         "primary_issue": "Parsing tables (LL(1) & LR(0)/SLR(1)) conflict analysis",
         "negative_marks_lost": 4.66
     },
@@ -203,7 +205,7 @@ WEAKEST_TOPICS = [
         "topic": "Theory of Computation",
         "accuracy": 56.5,
         "mastery": "Attention Needed (54/100)",
-        "badge": "⚠️ Concept Trap",
+        "badge": "Concept trap",
         "primary_issue": "Closure properties and Decidability / Undecidability proofs",
         "negative_marks_lost": 6.33
     },
@@ -211,7 +213,7 @@ WEAKEST_TOPICS = [
         "topic": "Computer Organization",
         "accuracy": 60.0,
         "mastery": "Improvement Needed (58/100)",
-        "badge": "⚠️ Calculation Bottleneck",
+        "badge": "Calculation bottleneck",
         "primary_issue": "Pipelining hazards, branch penalties, and Cache latency calculations",
         "negative_marks_lost": 3.66
     }
@@ -219,7 +221,7 @@ WEAKEST_TOPICS = [
 
 RECOMMENDED_REVISIONS = [
     {
-        "priority": "🔥 High Priority",
+        "priority": "High",
         "topic": "Theory of Computation - Decidability & Reducibility",
         "weightage": "4-5 marks",
         "current_accuracy": "48%",
@@ -227,7 +229,7 @@ RECOMMENDED_REVISIONS = [
         "suggested_questions": "20 PYQs (2015-2024)"
     },
     {
-        "priority": "🔥 High Priority",
+        "priority": "High",
         "topic": "Compiler Design - Bottom-Up Parsing (LR Parsing)",
         "weightage": "3-4 marks",
         "current_accuracy": "50%",
@@ -235,7 +237,7 @@ RECOMMENDED_REVISIONS = [
         "suggested_questions": "15 Targeted Problems"
     },
     {
-        "priority": "⚡ Medium Priority",
+        "priority": "Medium",
         "topic": "Computer Networks - TCP Congestion Window & Subnetting",
         "weightage": "4-5 marks",
         "current_accuracy": "61%",
@@ -243,7 +245,7 @@ RECOMMENDED_REVISIONS = [
         "suggested_questions": "18 Numericals"
     },
     {
-        "priority": "⚡ Medium Priority",
+        "priority": "Medium",
         "topic": "Computer Organization - Pipeline CPI & Structural Hazards",
         "weightage": "3-4 marks",
         "current_accuracy": "58%",
@@ -251,7 +253,7 @@ RECOMMENDED_REVISIONS = [
         "suggested_questions": "12 Numericals"
     },
     {
-        "priority": "✅ Maintenance",
+        "priority": "Maintenance",
         "topic": "Algorithms - Dynamic Programming & Graph Theory",
         "weightage": "8-10 marks",
         "current_accuracy": "89%",
