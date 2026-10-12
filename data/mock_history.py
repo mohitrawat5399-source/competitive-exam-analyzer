@@ -3,220 +3,281 @@ Mock historical and analytical performance data for GATE CS aspirant.
 Provides realistic metrics, test progression history, topic mastery levels, and recommendations.
 """
 
-DASHBOARD_SUMMARY = {
-    "avg_score": 68.5,
-    "score_delta": "+5.2 pts",
-    "score_delta_note": "vs last month",
-    "avg_accuracy": 77.8,
-    "accuracy_delta": "+3.4%",
-    "accuracy_delta_note": "this week",
-    "tests_completed": 14,
-    "total_questions_solved": 860,
-    "current_streak_days": 12,
-    "predicted_gate_score": 745,
-    "predicted_rank": "AIR 240–320",
-    "estimated_percentile": 98.4
-}
-
-RECENT_TESTS = [
+# 14 completed mock test sessions for GATE CS 2027 preparation (Demo dataset)
+TEST_HISTORY = [
+    {
+        "test_name": "Diagnostic Mock",
+        "date": "2026-08-22",
+        "questions_count": 60,
+        "score": 56.0,
+        "max_score": 100,
+        "accuracy": 64.0,
+        "time_taken_min": 175,
+    },
+    {
+        "test_name": "Sectional: Discrete Math",
+        "date": "2026-08-26",
+        "questions_count": 50,
+        "score": 60.0,
+        "max_score": 100,
+        "accuracy": 68.5,
+        "time_taken_min": 140,
+    },
     {
         "test_name": "Full Mock 1",
-        "date": "2026-09-05",
-        "score": 54.0,
+        "date": "2026-08-30",
+        "questions_count": 65,
+        "score": 62.5,
         "max_score": 100,
-        "accuracy": 62.5,
+        "accuracy": 71.0,
         "time_taken_min": 172,
-        "rank": 820
+    },
+    {
+        "test_name": "Subject: Digital Logic",
+        "date": "2026-09-04",
+        "questions_count": 60,
+        "score": 64.0,
+        "max_score": 100,
+        "accuracy": 73.0,
+        "time_taken_min": 155,
     },
     {
         "test_name": "Sectional: Core CS",
-        "date": "2026-09-12",
-        "score": 58.5,
+        "date": "2026-09-08",
+        "questions_count": 65,
+        "score": 66.0,
         "max_score": 100,
-        "accuracy": 67.0,
-        "time_taken_min": 160,
-        "rank": 640
+        "accuracy": 74.5,
+        "time_taken_min": 168,
     },
     {
         "test_name": "Full Mock 2",
-        "date": "2026-09-19",
-        "score": 62.0,
+        "date": "2026-09-12",
+        "questions_count": 60,
+        "score": 67.5,
         "max_score": 100,
-        "accuracy": 71.5,
-        "time_taken_min": 165,
-        "rank": 510
+        "accuracy": 76.0,
+        "time_taken_min": 145,
     },
     {
         "test_name": "Subject: Algo & DS",
-        "date": "2026-09-26",
-        "score": 74.0,
+        "date": "2026-09-16",
+        "questions_count": 65,
+        "score": 68.5,
         "max_score": 100,
-        "accuracy": 82.0,
-        "time_taken_min": 145,
-        "rank": 320
+        "accuracy": 77.0,
+        "time_taken_min": 165,
+    },
+    {
+        "test_name": "Sectional: DBMS & OS",
+        "date": "2026-09-20",
+        "questions_count": 60,
+        "score": 70.0,
+        "max_score": 100,
+        "accuracy": 78.5,
+        "time_taken_min": 150,
     },
     {
         "test_name": "Full Mock 3",
-        "date": "2026-10-02",
-        "score": 69.5,
+        "date": "2026-09-24",
+        "questions_count": 65,
+        "score": 71.5,
         "max_score": 100,
-        "accuracy": 76.5,
-        "time_taken_min": 158,
-        "rank": 390
+        "accuracy": 80.0,
+        "time_taken_min": 160,
     },
     {
-        "test_name": "Sectional: Systems (OS/CN)",
-        "date": "2026-10-06",
-        "score": 71.0,
+        "test_name": "Subject: Computer Networks",
+        "date": "2026-09-28",
+        "questions_count": 60,
+        "score": 72.0,
         "max_score": 100,
-        "accuracy": 79.0,
-        "time_taken_min": 150,
-        "rank": 340
+        "accuracy": 80.5,
+        "time_taken_min": 148,
+    },
+    {
+        "test_name": "Sectional: Systems",
+        "date": "2026-10-02",
+        "questions_count": 65,
+        "score": 73.0,
+        "max_score": 100,
+        "accuracy": 81.5,
+        "time_taken_min": 162,
+    },
+    {
+        "test_name": "Subject: Theory & Compiler",
+        "date": "2026-10-05",
+        "questions_count": 60,
+        "score": 74.5,
+        "max_score": 100,
+        "accuracy": 83.0,
+        "time_taken_min": 152,
+    },
+    {
+        "test_name": "Subject: Computer Organization",
+        "date": "2026-10-08",
+        "questions_count": 60,
+        "score": 77.0,
+        "max_score": 100,
+        "accuracy": 84.5,
+        "time_taken_min": 146,
     },
     {
         "test_name": "Full Mock 4 (Latest)",
         "date": "2026-10-10",
+        "questions_count": 65,
         "score": 76.5,
         "max_score": 100,
         "accuracy": 83.2,
         "time_taken_min": 162,
-        "rank": 265
-    }
+    },
 ]
+
+# Backward compatibility aliases
+ALL_TESTS = TEST_HISTORY
+RECENT_TESTS = TEST_HISTORY[-7:]
+
+# Summary calculated dynamically from the 14 mock sessions to ensure 100% mathematical consistency
+_scores = [t["score"] for t in TEST_HISTORY]
+_accuracies = [t["accuracy"] for t in TEST_HISTORY]
+_questions = [t["questions_count"] for t in TEST_HISTORY]
+
+DASHBOARD_SUMMARY = {
+    "avg_score": round(sum(_scores) / len(_scores), 1),  # 959.0 / 14 = 68.5
+    "score_delta": "+5.2 pts",
+    "score_delta_note": "vs last month",
+    "avg_accuracy": round(sum(_accuracies) / len(_accuracies), 1),  # 1075.2 / 14 = 76.8%
+    "accuracy_delta": "+3.4%",
+    "accuracy_delta_note": "this week",
+    "tests_completed": len(TEST_HISTORY),  # exactly 14
+    "total_questions_solved": sum(_questions),  # exactly 860
+    "current_streak_days": 12,
+    "target_exam": "GATE CS 2027",
+    "dataset_type": "demo",
+}
 
 TOPIC_MASTERY = [
     {
         "topic": "Algorithms",
-        "mastery_score": 88,
         "accuracy": 89.5,
         "benchmark": 75,
-        "attempted": 145,
+        "attempted": 140,
         "status": "Strong",
-        "weightage_marks": "9-11"
+        "weightage_marks": "9-11",
     },
     {
         "topic": "Data Structures",
-        "mastery_score": 85,
         "accuracy": 86.0,
         "benchmark": 75,
-        "attempted": 130,
+        "attempted": 120,
         "status": "Strong",
-        "weightage_marks": "7-9"
+        "weightage_marks": "7-9",
     },
     {
         "topic": "Operating Systems",
-        "mastery_score": 81,
         "accuracy": 82.5,
         "benchmark": 70,
-        "attempted": 110,
+        "attempted": 105,
         "status": "Strong",
-        "weightage_marks": "8-10"
+        "weightage_marks": "8-10",
     },
     {
         "topic": "Database Systems",
-        "mastery_score": 78,
         "accuracy": 79.0,
         "benchmark": 70,
         "attempted": 95,
         "status": "Moderate",
-        "weightage_marks": "7-8"
+        "weightage_marks": "7-8",
     },
     {
         "topic": "Digital Logic",
-        "mastery_score": 74,
         "accuracy": 75.0,
         "benchmark": 65,
-        "attempted": 80,
+        "attempted": 75,
         "status": "Moderate",
-        "weightage_marks": "5-6"
+        "weightage_marks": "5-6",
     },
     {
         "topic": "Computer Networks",
-        "mastery_score": 62,
         "accuracy": 64.0,
         "benchmark": 70,
-        "attempted": 105,
+        "attempted": 95,
         "status": "Needs Work",
-        "weightage_marks": "8-10"
+        "weightage_marks": "8-10",
     },
     {
         "topic": "Theory of Computation",
-        "mastery_score": 54,
         "accuracy": 56.5,
         "benchmark": 72,
-        "attempted": 98,
+        "attempted": 90,
         "status": "Weak",
-        "weightage_marks": "8-10"
+        "weightage_marks": "8-10",
     },
     {
         "topic": "Compiler Design",
-        "mastery_score": 49,
         "accuracy": 51.0,
         "benchmark": 70,
-        "attempted": 72,
+        "attempted": 65,
         "status": "Weak",
-        "weightage_marks": "4-6"
+        "weightage_marks": "4-6",
     },
     {
         "topic": "Computer Organization",
-        "mastery_score": 58,
         "accuracy": 60.0,
         "benchmark": 68,
-        "attempted": 85,
+        "attempted": 75,
         "status": "Needs Work",
-        "weightage_marks": "7-9"
-    }
+        "weightage_marks": "7-9",
+    },
 ]
+
+# Highlighted core topics for the dashboard (OS, DBMS, CN, and Algorithms)
+CORE_TOPIC_NAMES = ["Algorithms", "Operating Systems", "Database Systems", "Computer Networks"]
+CORE_TOPIC_MASTERY = [t for t in TOPIC_MASTERY if t["topic"] in CORE_TOPIC_NAMES]
 
 STRONGEST_TOPICS = [
     {
         "topic": "Algorithms",
         "accuracy": 89.5,
-        "mastery": "Expert (88/100)",
         "badge": "Best performing",
-        "highlight": "High speed on Dynamic Programming & Divide-and-Conquer"
+        "highlight": "High speed on Dynamic Programming & Divide-and-Conquer",
     },
     {
         "topic": "Data Structures",
         "accuracy": 86.0,
-        "mastery": "Proficient (85/100)",
         "badge": "Consistent",
-        "highlight": "Flawless on Trees, Heaps, and Hashing"
+        "highlight": "Flawless on Trees, Heaps, and Hashing",
     },
     {
         "topic": "Operating Systems",
         "accuracy": 82.5,
-        "mastery": "Proficient (81/100)",
         "badge": "Reliable",
-        "highlight": "Strong on Process Synchronization & Scheduling"
-    }
+        "highlight": "Strong on Process Synchronization & Scheduling",
+    },
 ]
 
 WEAKEST_TOPICS = [
     {
         "topic": "Compiler Design",
         "accuracy": 51.0,
-        "mastery": "Critical (49/100)",
         "badge": "High negative marking",
         "primary_issue": "Parsing tables (LL(1) & LR(0)/SLR(1)) conflict analysis",
-        "negative_marks_lost": 4.66
+        "negative_marks_lost": 4.66,
     },
     {
         "topic": "Theory of Computation",
         "accuracy": 56.5,
-        "mastery": "Attention Needed (54/100)",
         "badge": "Concept trap",
         "primary_issue": "Closure properties and Decidability / Undecidability proofs",
-        "negative_marks_lost": 6.33
+        "negative_marks_lost": 6.33,
     },
     {
         "topic": "Computer Organization",
         "accuracy": 60.0,
-        "mastery": "Improvement Needed (58/100)",
         "badge": "Calculation bottleneck",
         "primary_issue": "Pipelining hazards, branch penalties, and Cache latency calculations",
-        "negative_marks_lost": 3.66
-    }
+        "negative_marks_lost": 3.66,
+    },
 ]
 
 RECOMMENDED_REVISIONS = [

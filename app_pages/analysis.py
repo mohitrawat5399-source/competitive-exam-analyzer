@@ -2,18 +2,21 @@
 Analysis and diagnostics.
 
 - Sample score and accuracy (uses the latest practice attempt when available)
-- Topic mastery chart vs. cutoff benchmark
+- Topic mastery chart vs. target benchmark
 - Weak-topic list with negative-marking diagnosis
 - Recommended topics for revision
 """
+
+from datetime import date
 
 import altair as alt
 import pandas as pd
 import streamlit as st
 
-from data.mock_history import DASHBOARD_SUMMARY, RECOMMENDED_REVISIONS, TOPIC_MASTERY, WEAKEST_TOPICS
-from shared import PRACTICE_PAGE, chart_colors
+from data.mock_history import RECOMMENDED_REVISIONS, TOPIC_MASTERY, WEAKEST_TOPICS
+from shared import PRACTICE_PAGE, chart_colors, init_state
 
+init_state()
 ss = st.session_state
 colors = chart_colors()
 PRIORITY_STYLE = {
@@ -23,26 +26,35 @@ PRIORITY_STYLE = {
 }
 
 # --- Header -----------------------------------------------------------------
-st.caption("Analysis")
-st.title("Performance diagnostics")
-st.markdown("Find the high-yield gaps, see how each subject compares to the cutoff, and follow a focused revision plan.")
+with st.container(horizontal=True, horizontal_alignment="distribute", vertical_alignment="center"):
+    st.caption("GATE CS 2027 · Performance Diagnostics")
+    st.badge("Demo dataset", icon=":material/science:", color="secondary")
 
-latest = ss.latest_test_results
+st.title("Performance diagnostics")
+st.markdown("Detailed breakdown of your accuracy trends, topic proficiencies, and an actionable revision roadmap.")
+
+latest = ss.get("latest_test_results")
 if latest:
     score, max_score = latest["net_score"], latest["max_marks"]
     accuracy = latest["accuracy"]
     correct, incorrect, skipped = latest["correct_count"], latest["incorrect_count"], latest["unattempted_count"]
-    source = "Latest practice session"
+    source = f"Live Practice Attempt ({date.today():%d %b %Y})"
 else:
     score, max_score, accuracy = 76.5, 100, 83.2
     correct, incorrect, skipped = 48, 11, 6
-    source = "Full mock 4 (benchmark)"
+    source = "Full Mock 4 (10 Oct 2026)"
 
 with st.container(horizontal=True, gap="small", vertical_alignment="center"):
-    st.caption("Showing")
-    st.badge(source, icon=":material/dataset:", color="gray")
+    st.caption("Diagnostic source")
+    st.badge(source, icon=":material/dataset:", color="primary")
+
+if not latest:
+    st.info("Displaying diagnostic results from **Full Mock 4 (10 Oct 2026)** (Demo dataset for GATE CS 2027). Complete a live session in the Practice tab to evaluate your newest test in real time.", icon=":material/info:")
 
 # --- Score and accuracy -----------------------------------------------------
+total_q = correct + incorrect + skipped
+attempt_rate = round((correct + incorrect) / total_q * 100, 1) if total_q else 0.0
+
 with st.container(horizontal=True):
     st.metric(
         "Score",
@@ -69,10 +81,11 @@ with st.container(horizontal=True):
         border=True,
     )
     st.metric(
-        "Projected rank",
-        DASHBOARD_SUMMARY["predicted_rank"],
-        f"Top {100 - DASHBOARD_SUMMARY['estimated_percentile']:.1f}%",
+        "Attempt rate",
+        f"{attempt_rate}%",
+        f"{correct + incorrect} of {total_q} questions",
         delta_arrow="off",
+        delta_color="off",
         border=True,
     )
 
@@ -82,11 +95,14 @@ mastery["tier"] = pd.cut(
     mastery["accuracy"], bins=[0, 65, 80, 101], labels=["Weak", "Moderate", "Strong"], right=False
 ).astype(str)
 
+st.subheader("Topic performance & diagnostics", icon=":material/bar_chart:")
+st.caption("Detailed evaluation of subject proficiencies against the 70% benchmark across all GATE CS core areas.")
+
 with st.container(border=True):
     with st.container(horizontal=True, horizontal_alignment="distribute", vertical_alignment="center"):
         with st.container(gap="xsmall"):
-            st.markdown("**Topic mastery vs. cutoff benchmark**")
-            st.caption("Bars show your accuracy; the tick marks the target for top IITs / IISc.")
+            st.markdown("**Topic accuracy vs. target benchmark**")
+            st.caption("Bars show your accuracy; the tick marks the 70% target benchmark.")
         view = st.segmented_control(
             "View",
             [":material/bar_chart:", ":material/table:"],
@@ -98,18 +114,17 @@ with st.container(border=True):
 
     if view == ":material/table:":
         st.dataframe(
-            mastery[["topic", "accuracy", "benchmark", "mastery_score", "attempted", "weightage_marks", "status"]],
+            mastery[["topic", "accuracy", "benchmark", "attempted", "weightage_marks", "status"]],
             hide_index=True,
             column_config={
                 "topic": st.column_config.TextColumn("Topic"),
                 "accuracy": st.column_config.ProgressColumn("Accuracy", min_value=0, max_value=100, format="%.1f%%"),
                 "benchmark": st.column_config.NumberColumn("Target", format="%d%%"),
-                "mastery_score": st.column_config.NumberColumn("Mastery", format="%d / 100"),
                 "attempted": st.column_config.NumberColumn("Attempted"),
                 "weightage_marks": st.column_config.TextColumn("GATE weightage"),
                 "status": st.column_config.TextColumn("Status"),
             },
-            alt="Accuracy, target and mastery for each GATE CS topic",
+            alt="Accuracy, target and status for each GATE CS topic",
         )
     else:
         topic_order = mastery["topic"].tolist()
@@ -147,8 +162,8 @@ with st.container(border=True):
         )
 
 # --- Weak topics ------------------------------------------------------------
-st.subheader("Weak topics", icon=":material/report:")
-st.caption("Root causes behind the marks you're losing to negative marking.")
+st.subheader("Weak topics & negative marking audit", icon=":material/report:")
+st.caption("Root-cause breakdown of syllabus areas where negative marking is eroding your score.")
 
 weak_col, audit_col = st.columns([3, 2], gap="medium")
 
@@ -160,22 +175,21 @@ with weak_col:
                 st.badge(t["badge"], color="red")
             st.markdown(t["primary_issue"])
             st.caption(
-                f"Accuracy **{t['accuracy']}%** · Penalty :red[**−{t['negative_marks_lost']}** marks/test] · "
-                f"{t['mastery']}"
+                f"Accuracy **{t['accuracy']}%** · Penalty :red[**−{t['negative_marks_lost']}** marks/test]"
             )
 
 with audit_col.container(border=True, height="stretch"):
     st.markdown("**Negative marks audit**")
     st.markdown(
-        "Removing just **three wrong answers** on 2-mark questions wins back about **8 marks**, "
-        "which typically moves your AIR by **150–300 places**."
+        "Removing just **three wrong answers** on 2-mark questions recovers **8 marks** in net score, "
+        "preventing significant score erosion from negative deductions."
     )
     st.markdown(
         "- **Theory of computation:** traps in undecidable problems\n"
         "- **Compiler design:** LR(1) lookahead conflicts\n"
         "- **Computer organization:** pipeline hazard stalls"
     )
-    if st.button("Practice weak topics", type="primary", icon=":material/target:", width="stretch"):
+    if st.button("Start PYQ Practice on weak topics", type="primary", icon=":material/target:", width="stretch"):
         ss.practice_topic = "Theory of Computation"
         ss.practice_q_idx = 0
         ss.pop("w_practice_topic", None)

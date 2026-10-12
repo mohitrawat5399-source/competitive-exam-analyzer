@@ -12,8 +12,9 @@ import time
 import streamlit as st
 
 from data.questions import EXAM_OPTIONS, QUESTIONS_DB, TOPIC_OPTIONS, YEAR_OPTIONS
-from shared import ANALYSIS_PAGE, EXAM_DURATION_SECONDS, grade, negative_marks
+from shared import ANALYSIS_PAGE, EXAM_DURATION_SECONDS, grade, init_state, negative_marks
 
+init_state()
 ss = st.session_state
 if ss.practice_started_at is None:
     ss.practice_started_at = time.time()
@@ -60,9 +61,9 @@ def submit() -> None:
 
 
 # --- Header -----------------------------------------------------------------
-st.caption("Practice arena")
-st.title("Timed practice")
-st.markdown("Real GATE CS questions with exam-style marking. Your answers carry over to the analysis tab.")
+st.caption("GATE CS 2027 · PYQ Practice Arena")
+st.title("Timed PYQ practice")
+st.markdown("Authentic GATE CS previous year questions with real exam marking. Your evaluated responses link directly to the analysis tab.")
 
 # --- Filters ----------------------------------------------------------------
 exam_col, year_col, topic_col = st.columns([1, 1.5, 1.2], vertical_alignment="bottom")
@@ -112,6 +113,19 @@ idx = ss.practice_q_idx
 q = questions[idx]
 qid = q["id"]
 submitted = ss.test_submitted
+
+# Session summary row
+with st.container(border=True, horizontal=True, horizontal_alignment="distribute", vertical_alignment="center"):
+    st.markdown("**Session overview**")
+    with st.container(horizontal=True, gap="small", width="content"):
+        st.badge(f"{ss.practice_exam} PYQ", color="primary")
+        st.badge(f"{total} Questions", icon=":material/quiz:", color="gray")
+        st.badge(f"Max {sum(item.get('marks', 2) for item in questions)} Marks", icon=":material/grade:", color="gray")
+        st.badge("Marking: +1 / +2 (−1/3 penalty)", icon=":material/balance:", color="gray")
+        if submitted:
+            st.badge("Completed", icon=":material/check_circle:", color="green")
+        else:
+            st.badge("Live attempt", icon=":material/pending:", color="orange")
 
 
 @st.fragment(run_every="1s")
@@ -232,6 +246,23 @@ with palette_col.container(border=True):
         on_click=submit,
         disabled=submitted,
     )
+
+if not submitted:
+    st.space("small")
+    with st.expander("Preview evaluation format & instant solution breakdown (Demo)", icon=":material/visibility:"):
+        st.caption("Here is how your results and detailed LaTeX solutions will appear upon submitting the test:")
+        sample_q = questions[0]
+        with st.container(horizontal=True, gap="small"):
+            st.badge("Sample evaluated: Correct", color="green", icon=":material/check_circle:")
+            st.badge(f"+{sample_q['marks']} marks", color="gray")
+        st.markdown(sample_q["question"])
+        st.markdown(
+            f"**Your answer:** (B) {sample_q['options'][sample_q['correct_option_index']]}  \n"
+            f"**Correct answer:** :green[(B) {sample_q['options'][sample_q['correct_option_index']]}]"
+        )
+        with st.container(border=True):
+            st.markdown("**Detailed solution breakdown**")
+            st.markdown(sample_q["explanation"].replace("\n", "  \n"))
 
 # --- Results ----------------------------------------------------------------
 if submitted:

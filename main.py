@@ -35,9 +35,10 @@ with st.sidebar:
 
     with st.container(border=True):
         st.markdown("**Aspirant profile**")
-        st.markdown(":gray[Target exam]  \nGATE CS & IT 2025/26")
-        st.markdown(":gray[Target score]  \n:green[**75+ marks**] · top IITs")
+        st.markdown(":gray[Target exam]  \nGATE CS 2027 *(Feb 2027)*")
+        st.markdown(":gray[Target score]  \n:green[**75+ marks**]")
         st.markdown(":gray[Study track]  \nCore CS + engineering math")
+        st.caption(":material/science: Demo dataset · 14 sessions")
 
     st.button(
         "Reset practice session",
